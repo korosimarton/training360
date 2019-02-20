@@ -1,9 +1,12 @@
 package daos;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class LocationDao {
     private List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
 
