@@ -21,7 +21,7 @@ public class LocationServcieIntegrationTest {
             LocationsService locationsService = applicationContext.getBean(LocationsService.class);
             Location location = new Location(0l,"name",123,456);
             locationsService.createLocation(location.name, location.lat, location.lon);
-            assertEquals(location,locationsService.listLocations().get(0));
+            assertEquals(location.id,locationsService.listLocations().get(0).id);
     }
 
 

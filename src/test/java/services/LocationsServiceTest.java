@@ -10,7 +10,7 @@ import static org.mockito.Mockito.times;
 public class LocationsServiceTest {
 
     LocationDao locationDao = Mockito.mock(LocationDao.class);
-    LocationsService locationsService = new LocationsService(locationDao);
+    LocationsService locationsService = new LocationsService(null, locationDao);
 
     @Test
     public void listLocationsTest() {

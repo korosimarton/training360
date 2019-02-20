@@ -33,7 +33,7 @@ public class LocationServcieIntegrationTestEnhanced {
     public void testCreateMethod(){
             Location location = new Location(0l,"name",123,456);
             locationsService.createLocation(location.name, location.lat, location.lon);
-            assertEquals(location,locationsService.listLocations().get(0));
+            assertEquals(location.id,locationsService.listLocations().get(0).id);
 
     }
 
@@ -47,10 +47,19 @@ public class LocationServcieIntegrationTestEnhanced {
 
     @Test
     public void test3(){
-        Location location = new Location(0l,"name",123,456);
-        locationsService.createLocation(location.name, location.lat, location.lon);
-        Location locationReturned = locationsService.getLocationById(location.id );
-        Assert.assertEquals(location, locationReturned);
+        long id = locationsService.createLocation("name", 123,456);
+        Location locationReturned = locationsService.getLocationById(id );
+        Assert.assertEquals(id, locationReturned.id);
     }
+
+    @Test
+    public void test4(){
+        Location location1 = locationsService.createLocationTemplate();
+        Location location2 = locationsService.createLocationTemplate();
+        System.out.println(location1);
+        System.out.println(location2);
+        Assert.assertNotEquals(location1,location2);
+    }
+
 
 }
