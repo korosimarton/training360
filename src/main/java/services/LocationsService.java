@@ -1,17 +1,14 @@
 package services;
 
-import config.AppConfig;
 import daos.Location;
 import daos.LocationDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +20,8 @@ public class LocationsService {
     private LocationDao locationDao;
 
     private ApplicationEventPublisher applicationEventPublisher;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public LocationsService(ApplicationContext applicationContext, LocationDao locationDao) {
@@ -47,7 +46,8 @@ public class LocationsService {
     }
 
     public Location createLocationTemplate(){
-            return applicationContext.getBean("templateLocation", Location.class);
+        logger.debug("createLocationTemplate() was called");
+        return applicationContext.getBean("templateLocation", Location.class);
     }
 
     public void updateLocation(long id, String name, double lat, double lon){
