@@ -25,7 +25,7 @@ public class LocationsService {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public LocationsService(ApplicationContext applicationContext, @Qualifier("listLocationDao") LocationDao locationDao) {
+    public LocationsService(ApplicationContext applicationContext, LocationDao locationDao) {
         this.applicationContext = applicationContext;
         this.locationDao = locationDao;
     }

@@ -2,6 +2,7 @@ package daos;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("listLocationDao")
+@Profile({"normal"})
 public class ListLocationDao implements LocationDao {
     private List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
 
