@@ -8,7 +8,7 @@
             </Pattern>
         </layout>
     </appender>
-    s
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

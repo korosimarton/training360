@@ -5,11 +5,13 @@ import daos.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import services.CounterAspect;
 import services.LocationsService;
 
 @Configuration
-@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class})
+@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class})
 @PropertySource("classpath:/configuration.properties")
+@EnableAspectJAutoProxy
 public class AppConfig {
 
     @Autowired
