@@ -1,15 +1,15 @@
 package services;
 
+import daos.ListLocationDao;
 import daos.LocationDao;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 
 public class LocationsServiceTest {
 
-    LocationDao locationDao = Mockito.mock(LocationDao.class);
+    LocationDao locationDao = Mockito.mock(ListLocationDao.class);
     LocationsService locationsService = new LocationsService(null, locationDao);
 
     @Test

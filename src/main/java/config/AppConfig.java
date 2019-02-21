@@ -1,8 +1,7 @@
 package config;
 
+import daos.ListLocationDao;
 import daos.Location;
-import daos.LocationDao;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Scope;
 import services.LocationsService;
 
 @Configuration
-@ComponentScan(basePackageClasses = {LocationDao.class, LocationsService.class, Location.class})
+@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class})
 public class AppConfig {
 //    @Bean
 //    public LocationDao locationDao(){

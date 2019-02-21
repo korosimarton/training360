@@ -4,6 +4,7 @@ import config.AppConfig;
 import daos.Location;
 import daos.LocationDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class LocationsService {
     private LocationDao locationDao;
 
     @Autowired
-    public LocationsService(ApplicationContext applicationContext, LocationDao locationDao) {
+    public LocationsService(ApplicationContext applicationContext, @Qualifier("listLocationDao") LocationDao locationDao) {
         this.applicationContext = applicationContext;
         this.locationDao = locationDao;
     }
