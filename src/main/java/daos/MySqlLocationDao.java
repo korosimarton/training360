@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +17,15 @@ import java.util.List;
 @Repository
 @Qualifier("listLocationDao")
 @Profile({"normal"})
-public class ListLocationDao implements LocationDao {
+@Primary
+public class MySqlLocationDao implements LocationDao {
     private List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
+
+    private DataSource dataSource;
+
+    public MySqlLocationDao(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
 
     private long cntr;
 
@@ -26,8 +36,13 @@ public class ListLocationDao implements LocationDao {
 
     @Override
     public long save(String name, double lat, double lon){
-        locations.add(new Location(cntr, name, lat, lon));
-        return cntr++;
+        try {
+            Connection connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot get connection", e);
+        }
+
+        return -1;
     }
 
     @Override

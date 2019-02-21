@@ -1,16 +1,20 @@
 package config;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import daos.ListLocationDao;
 import daos.Location;
+import daos.MySqlLocationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import services.CounterAspect;
 import services.LocationsService;
 
+import javax.sql.DataSource;
+
 @Configuration
-@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class})
-@PropertySource("classpath:/configuration.properties")
+@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class, MySqlLocationDao.class})
+@PropertySource({"classpath:/configuration.properties", "classpath:/application.properties"})
 @EnableAspectJAutoProxy
 public class AppConfig {
 
@@ -28,6 +32,15 @@ public class AppConfig {
 //        return new LocationsService(applicationContext, locationDao());
 //    }
 //
+
+    @Bean
+    public DataSource dataSource(){
+        MysqlDataSource mySqlDataSource = new MysqlDataSource();
+        mySqlDataSource.setURL(env.getProperty("jdbc.connectionString"));
+        mySqlDataSource.setUser(env.getProperty("jdbc.username"));
+        mySqlDataSource.setPassword(env.getProperty("jdbc.password"));
+        return mySqlDataSource;
+    }
 
     /*
         Ezt csak Java-configból tudjuk megoldani (annotation based configból nem tudnánk megcsinálni! :) )
