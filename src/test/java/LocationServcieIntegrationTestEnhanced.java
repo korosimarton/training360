@@ -92,7 +92,7 @@ public class LocationServcieIntegrationTestEnhanced {
         double updatedLat = 11;
         double updatedLon = 22;
         locationsService.updateLocation(id,updatedName, updatedLat,updatedLon);
-        Assert.assertEquals("[initialName->updatedName]", nameChangeListener.getChanges());
+        Assert.assertEquals("[initialName->updatedName]", nameChangeListener.getChanges().toString());
     }
 
 }
