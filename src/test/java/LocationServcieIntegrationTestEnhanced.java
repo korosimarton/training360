@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import config.AppConfig;
 import services.LocationsService;
+import services.NameChangeListener;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +22,9 @@ public class LocationServcieIntegrationTestEnhanced {
 
     @Autowired
     private LocationsService locationsService;
+
+    @Autowired
+    private NameChangeListener nameChangeListener;
 
     @Autowired
     @Qualifier("listLocationDao")
@@ -63,5 +67,32 @@ public class LocationServcieIntegrationTestEnhanced {
         Assert.assertNotEquals(location1,location2);
     }
 
+    @Test
+    public void test5(){
+        Location location = new Location(0l,"name",123,456);
+        long id = locationsService.createLocation(location.name, location.lat, location.lon);
+
+        String updatedName = "updated";
+        double updatedLat = 11;
+        double updatedLon = 22;
+        locationsService.updateLocation(id,updatedName, updatedLat,updatedLon);
+        Assert.assertEquals(updatedName, locationsService.getLocationById(id).name);
+        Assert.assertEquals(updatedLat, locationsService.getLocationById(id).lat, 0.0001);
+        Assert.assertEquals(updatedLon, locationsService.getLocationById(id).lon, 0.0001);
+    }
+
+    // Esemenykezeles feladat
+    @Test
+    public void test6(){
+        nameChangeListener.deleteAll();
+        Location location = new Location(0l,"initialName",123,456);
+        long id = locationsService.createLocation(location.name, location.lat, location.lon);
+
+        String updatedName = "updatedName";
+        double updatedLat = 11;
+        double updatedLon = 22;
+        locationsService.updateLocation(id,updatedName, updatedLat,updatedLon);
+        Assert.assertEquals("[initialName->updatedName]", nameChangeListener.getChanges());
+    }
 
 }

@@ -39,7 +39,14 @@ public class ListLocationDao implements LocationDao {
 
     @Override
     public void deleteAll(){
-        System.out.println("deleteAll() called");
         locations.clear();
+    }
+
+    @Override
+    public void update(long id, String name, double lat, double lon) {
+        Location location = locations.stream().filter(l -> l.id == id).findFirst().get();
+        location.name = name;
+        location.lat = lat;
+        location.lon = lon;
     }
 }

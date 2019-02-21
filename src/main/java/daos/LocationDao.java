@@ -12,4 +12,6 @@ public interface LocationDao {
     void delete(long id);
 
     void deleteAll();
+
+    void update(long id, String name, double lat, double lon);
 }

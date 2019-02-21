@@ -6,6 +6,8 @@ import daos.LocationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class LocationsService {
     private ApplicationContext applicationContext;
 
     private LocationDao locationDao;
+
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public LocationsService(ApplicationContext applicationContext, @Qualifier("listLocationDao") LocationDao locationDao) {
@@ -44,5 +48,21 @@ public class LocationsService {
 
     public Location createLocationTemplate(){
             return applicationContext.getBean("templateLocation", Location.class);
+    }
+
+    public void updateLocation(long id, String name, double lat, double lon){
+        Location oldLocation = new Location(locationDao.findById(id));
+        locationDao.update(id, name, lat, lon);
+        Location newLocation = new Location(id, name, lat, lon);
+        if(applicationEventPublisher != null){
+            LocationHasChangedEvent locationHasChangedEvent = new LocationHasChangedEvent(this,oldLocation, newLocation);
+            applicationEventPublisher.publishEvent(locationHasChangedEvent);
+        }
+
+    }
+
+    @Autowired(required = false)
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 }

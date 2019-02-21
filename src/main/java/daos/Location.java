@@ -17,4 +17,11 @@ public class Location {
         this.lon = lon;
     }
 
+    public Location(Location otherLocation){
+        this.id = otherLocation.id;
+        this.name = otherLocation.name;
+        this.lat = otherLocation.lat;
+        this.lon = otherLocation.lon;
+    }
+
 }

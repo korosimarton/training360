@@ -32,4 +32,9 @@ public class DummyLocationDao implements LocationDao {
     public void deleteAll() {
 
     }
+
+    @Override
+    public void update(long id, String name, double lat, double lon) {
+
+    }
 }
