@@ -6,13 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-@Qualifier("dummyLocationDao")
-@Profile("dummy")
+//@Repository
+//@Qualifier("dummyLocationDao")
+//@Profile("dummy")
 public class DummyLocationDao implements LocationDao {
     @Override
     public List<Location> findAll() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class DummyLocationDao implements LocationDao {
 
     @Override
     public Location findById(long id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -2,9 +2,9 @@ package config;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import daos.DummyLocationDao;
+import daos.JdbcLocationsDao;
 import daos.ListLocationDao;
 import daos.Location;
-import daos.MySqlLocationDao;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -15,7 +15,7 @@ import services.LocationsService;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class, MySqlLocationDao.class, DummyLocationDao.class})
+@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class, JdbcLocationsDao.class})
 @PropertySource({"classpath:/configuration.properties", "classpath:/application.properties"})
 @EnableAspectJAutoProxy
 public class AppConfig {
@@ -46,8 +46,9 @@ public class AppConfig {
 
     @Bean
     public Flyway flyway(){
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(dataSource());
+//        Flyway flyway = new Flyway();
+//        flyway.setDataSource(dataSource());
+        Flyway flyway = Flyway.configure().dataSource(dataSource()).load();
         flyway.migrate();
         return flyway;
     }

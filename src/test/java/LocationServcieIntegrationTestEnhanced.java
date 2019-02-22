@@ -31,7 +31,6 @@ public class LocationServcieIntegrationTestEnhanced {
     private CounterAspect counterAspect;
 
     @Autowired
-    @Qualifier("listLocationDao")
     private LocationDao locationDao;
 
     @Before
@@ -41,9 +40,8 @@ public class LocationServcieIntegrationTestEnhanced {
 
     @Test
     public void testCreateMethod(){
-            Location location = new Location(0l,"name",123,456);
-            locationsService.createLocation(location.name, location.lat, location.lon);
-            assertEquals(location.id,locationsService.listLocations().get(0).id);
+            locationsService.createLocation("name", 123, 456);
+            assertEquals(locationsService.listLocations().size(),1 );
 
     }
 
