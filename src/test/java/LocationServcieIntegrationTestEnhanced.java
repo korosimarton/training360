@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import config.AppConfig;
+import org.springframework.transaction.annotation.Transactional;
 import services.LocationsService;
 import services.NameChangeListener;
 import services.CounterAspect;

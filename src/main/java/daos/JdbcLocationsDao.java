@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+//@Repository
 @Profile({"normal"})
 public class JdbcLocationsDao implements LocationDao {
 
