@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("listLocationDao")
-@Profile({"normal"})
+@Profile({"sql"})
 @Primary
 public class MySqlLocationDao implements LocationDao {
     private List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
