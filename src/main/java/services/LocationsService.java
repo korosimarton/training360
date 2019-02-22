@@ -1,11 +1,10 @@
 package services;
 
 import daos.Location;
-import daos.LocationDao;
+import daos.LocationsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -18,32 +17,34 @@ public class LocationsService {
 
     private ApplicationContext applicationContext;
 
-    private LocationDao locationDao;
+    private LocationsRepository locationsRepository;
 
     private ApplicationEventPublisher applicationEventPublisher;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public LocationsService(ApplicationContext applicationContext, LocationDao locationDao) {
+    public LocationsService(ApplicationContext applicationContext, LocationsRepository locationsRepository) {
         this.applicationContext = applicationContext;
-        this.locationDao = locationDao;
+        this.locationsRepository = locationsRepository;
     }
 
     public List<Location> listLocations() {
-        return locationDao.findAll();
+        return locationsRepository.findAll();
     }
 
     public long createLocation(String name, double lat, double lon) {
-        return locationDao.save(name, lat, lon);
+        Location location = locationsRepository.save(new Location(name, lat, lon));
+        return location.getId();
     }
 
     public Location getLocationById(long id) {
-        return locationDao.findById(id);
+        return locationsRepository.findById(id).get();
     }
 
     public void deleteLocation(long id) {
-        locationDao.delete(id);
+        Location location = getLocationById(id);
+        locationsRepository.delete(location);
     }
 
     public Location createLocationTemplate(){
@@ -51,15 +52,20 @@ public class LocationsService {
         return applicationContext.getBean("templateLocation", Location.class);
     }
 
+    //@Transactional --> ezt is rárakhatnánk, akkor nem kéne a save()-t hívogatunk, hanem automatikusan metódus végén lefutna a kommit
     public void updateLocation(long id, String name, double lat, double lon){
-        Location oldLocation = new Location(locationDao.findById(id));
-        locationDao.update(id, name, lat, lon);
-        Location newLocation = new Location(id, name, lat, lon);
+        Location location = locationsRepository.findById(id).get(); // opening persistence context
+        Location oldLocation = new Location(location);
+        location.setId(id);
+        location.setName(name);
+        location.setLat(lat);
+        location.setLon(lon);
+        locationsRepository.save(location); // closing down persistence context
+        Location newLocation = new Location(location);
         if(applicationEventPublisher != null){
             LocationHasChangedEvent locationHasChangedEvent = new LocationHasChangedEvent(this,oldLocation, newLocation);
             applicationEventPublisher.publishEvent(locationHasChangedEvent);
         }
-
     }
 
     @Autowired(required = false)

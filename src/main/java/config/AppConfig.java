@@ -1,13 +1,13 @@
 package config;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import daos.JdbcLocationsDao;
-import daos.ListLocationDao;
 import daos.Location;
+import daos.LocationsRepository;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -19,10 +19,12 @@ import services.LocationsService;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackageClasses = {ListLocationDao.class, LocationsService.class, Location.class, CounterAspect.class, JdbcLocationsDao.class})
+@ComponentScan(basePackageClasses = {LocationsService.class, Location.class, CounterAspect.class,
+        LocationsRepository.class})
 @PropertySource({"classpath:/configuration.properties", "classpath:/application.properties"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "daos")
 public class AppConfig {
 
     @Autowired

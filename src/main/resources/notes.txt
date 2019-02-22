@@ -1,0 +1,83 @@
+﻿http://gitlab.training360.com/dashboard/projects
+
+emlék: nhamcrest
+
+MariaDB: MySQL fork (azzal kompatibliis)
+	- HeidiSQL kliens (MariaDB tartalmazza)
+	
+2. Bev. spring
+		Spring: JavaEE konkorencia
+		- fw.
+		- konténer
+		- komponensek életciklusát kezeli
+		- integrál több megoldást (külső librarrik)
+		- non-invaziv keretrendszer: az üzleti logika nem függ a keretrendszertől
+		- boilerplat kódok eliminálása
+		
+		3 rétegű webes alk: 
+			- Reposiotry
+			- Service (üzleti logika)
+			- Controller (RESTful webszolg. réteg), webes UIs
+			
+			
+		Spring Bean: POJO-k 	
+						- "managed object": a Spring container pédányosítja, és felügyeli az életciklusát
+						
+		JdbcTemplate: 	JDBC helyett, Spring biztosítja			
+		
+		AOP : non-invaziv : nem kell a konkrét kódot elrondítani, kívülről rárakhajtuk a logikát...
+3. 
+	IOC: don't call as we willcal you (HW-principle)
+		- a container hívja, felügyeli a kopmonenseket
+
+	DI: 
+		- tervezési minta (de a GOF könyben sajnos nincs benne)
+		- IOC egy implementációja
+		
+		- a függőségeket csak deklarálja
+		- a konténere majd elvégzi a wiring-ot
+		- low coupling (nem nekünk kell hívni a "new" KW-t)
+			--> tesztelés segítése
+
+			
+	Konstruktor injection		
+		- kötelező függőségekénl használjuk 
+		
+	Setter injection : 
+		- opcionáis függőségeknél szoktuk használni
+		
+	Attribute injection?
+
+
+	@Configuration
+		- az így ellátott osztályok a Spring módosítja CGLIB-bel (a Spring tertalmazza a CGLIB-et)
+			==> az adott metódus csak először kerül meghívásra, értékét elátorlja az application context-ben
+	
+	@Bean: 
+		- beanek definiálása
+		- a container (aka applicationContext fogja hívni h. lepéldányosítsa..)
+	
+	ApplicationContext == Container
+		- ez nem más mint egy map, a kulcs a bean neve, az érték a bean példánya
+		
+	*KÉRD: 7:56 BOM függőség
+			
+4. Unit és int. teszteés spring környzetben 
+	- unit teszt: teljesen független a Springtől!
+	
+
+5. Bean-ek személyre szabása
+
+
+@Autowired									== @Inject
+private ApplicationContext ctx; 
+
+
+dao: getter, setter?? 		
+
+
+
+@Transactional  annotáció:  metódusra rakjuk, nyit egy persistence context-et a metódus elején, a végén meg lezárja (dirty checking, és visszaírja az 
+	adatbázisba az objektumot)
+	István: - bárhova rakhatjuk, de általában a service layerbe szoktuk
+			- ha nem rakjuk ki explicit, akkor a CRUDrepository stb megcsinálja...

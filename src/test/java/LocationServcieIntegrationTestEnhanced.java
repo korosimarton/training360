@@ -1,16 +1,14 @@
 import daos.Location;
-import daos.LocationDao;
+import daos.LocationsRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import config.AppConfig;
-import org.springframework.transaction.annotation.Transactional;
 import services.LocationsService;
 import services.NameChangeListener;
 import services.CounterAspect;
@@ -32,11 +30,11 @@ public class LocationServcieIntegrationTestEnhanced {
     private CounterAspect counterAspect;
 
     @Autowired
-    private LocationDao locationDao;
+    private LocationsRepository locationRepository;
 
     @Before
     public void init(){
-        locationDao.deleteAll();
+        locationRepository.deleteAll();
     }
 
     @Test
