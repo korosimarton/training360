@@ -1,5 +1,6 @@
 package services;
 
+import daos.AuditLog;
 import daos.Location;
 import daos.LocationsRepository;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,17 +18,17 @@ import java.util.List;
 public class LocationsService {
 
     private ApplicationContext applicationContext;
-
     private LocationsRepository locationsRepository;
-
+    private AuditLoggerService auditLoggerService;
     private ApplicationEventPublisher applicationEventPublisher;
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public LocationsService(ApplicationContext applicationContext, LocationsRepository locationsRepository) {
+    public LocationsService(ApplicationContext applicationContext, LocationsRepository locationsRepository,
+            AuditLoggerService auditLoggerService) {
         this.applicationContext = applicationContext;
         this.locationsRepository = locationsRepository;
+        this.auditLoggerService = auditLoggerService;
     }
 
     public List<Location> listLocations() {
@@ -35,6 +37,8 @@ public class LocationsService {
 
     public long createLocation(String name, double lat, double lon) {
         Location location = locationsRepository.save(new Location(name, lat, lon));
+        String logMessage = String.format("Location %s has been saved succefully.",name );
+        auditLoggerService.saveAuditLog(new AuditLog(logMessage));
         return location.getId();
     }
 

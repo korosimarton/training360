@@ -13,6 +13,8 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import services.AuditLoggerService;
 import services.CounterAspect;
 import services.LocationsService;
 
@@ -20,7 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan(basePackageClasses = {LocationsService.class, Location.class, CounterAspect.class,
-        LocationsRepository.class})
+        LocationsRepository.class, AuditLoggerService.class})
 @PropertySource({"classpath:/configuration.properties", "classpath:/application.properties"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement

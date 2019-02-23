@@ -1,3 +1,5 @@
+import daos.AuditLog;
+import daos.AuditLoggerRepository;
 import daos.Location;
 import daos.LocationsRepository;
 import org.junit.Assert;
@@ -9,11 +11,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import config.AppConfig;
+import services.AuditLoggerService;
 import services.LocationsService;
 import services.NameChangeListener;
 import services.CounterAspect;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
@@ -24,6 +29,9 @@ public class LocationServcieIntegrationTestEnhanced {
     private LocationsService locationsService;
 
     @Autowired
+    private AuditLoggerService auditLoggerService;
+
+    @Autowired
     private NameChangeListener nameChangeListener;
 
     @Autowired
@@ -32,9 +40,13 @@ public class LocationServcieIntegrationTestEnhanced {
     @Autowired
     private LocationsRepository locationRepository;
 
+    @Autowired
+    private AuditLoggerRepository auditLoggerRepository;
+
     @Before
     public void init(){
         locationRepository.deleteAll();
+        auditLoggerRepository.deleteAll();
     }
 
     @Test
@@ -111,5 +123,12 @@ public class LocationServcieIntegrationTestEnhanced {
         System.out.println();
         System.out.println("mapsize after = " + counterAspect.getInitialCountMap().size());
         System.out.println(counterAspect.getInitialCountMap());
+    }
+
+    @Test
+    public void auditLogTest(){
+        Location location = new Location("Praga",47,19);
+        long locationId = locationsService.createLocation(location.name, location.lat, location.lon);
+        Assert.assertEquals(1,auditLoggerService.listAuditLogs().size());
     }
 }
